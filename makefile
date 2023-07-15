@@ -32,7 +32,7 @@ all: $(OBJ)
 
 $(OBJ): $(SRC) $(DEPS)
 	@mkdir -p $(BDIR)
-	$(ASM) $< -o$@ -l$(LST) -v4 -f2
+	$(ASM) $< -o$@ -l$(LST) -v4 -f3
 
 $(IMAGE): $(OBJ)
 	cp $(BOOTIMAGE) $(IMAGE)
