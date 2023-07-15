@@ -28,12 +28,12 @@ ZPC3          equ $FD
 STACK         equ $100
 
 
-TXTPG0        equ $0400
-TXTPG1        equ $0800
-CLICK         equ $C030
-HOME          equ $FC58
-RDKEY         EQU $FD0C
-COUT          equ $FDED
-OUTPORT       equ $FE95
+;TXTPG0        equ $0400
+;TXTPG1        equ $0800
+;CLICK         equ $C030
+;HOME          equ $FC58
+RDKEY         equ $f643  ;EQU $FD0C
+;COUT          equ $FDED
+;OUTPORT       equ $FE95
 
-EXITDOS       equ $03D0
+EXITDOS       equ $FF00 ; equ $03D0

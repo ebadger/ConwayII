@@ -12,9 +12,9 @@
 ; Build Options
 ; ------------------------------------
  
-NOISY           equ 1                           ; 0 = Sound off, 1 = Sound on
-CHARSET         equ 4                           ; 0 = Olde Skoole, 1 = Pixel, 2 = Inverse, 3 = Small O's, 4 = Enhanced
-INIT_PATTERN    equ 0                           ; 0 = Glider gun, 1 = "Random", 2 = Edge test
+NOISY           equ 0                           ; 0 = Sound off, 1 = Sound on
+CHARSET         equ 0                           ; 0 = Olde Skoole, 1 = Pixel, 2 = Inverse, 3 = Small O's, 4 = Enhanced
+INIT_PATTERN    equ 1                           ; 0 = Glider gun, 1 = "Random", 2 = Edge test
 TEST_PERF       equ 0                           ; 0 = Normal, 1 = Instrument for emulator cycle counting (forces Glider gun layout and sound off)
 
 ; ------------------------------------
@@ -42,12 +42,12 @@ fieldHeight     equ 24
 dataWidth       equ fieldWidth+2
 dataHeight      equ fieldHeight+2
 
-normalText      equ %10000000                   ; 'X | normalText
+;normalText      equ %10000000                   ; 'X | normalText
 inverseText     equ %00111111                   ; 'X & inverseText
 
                 if CHARSET == 0
-charOn          equ '* | normalText
-charOff         equ '. | normalText
+charOn          equ '@ ;| normalText
+charOff         equ '  ;| normalText
                 endif
 
                 if CHARSET == 1
@@ -90,7 +90,7 @@ y_bottomright   equ dataWidth*2+2
 start           subroutine
                 lda #0
                 sta currentPage                 ; Point main data segment to first block
-                jsr OUTPORT                     ; PR#0 (Set output to 40-column text screen)
+                ;jsr OUTPORT                     ; PR#0 (Set output to 40-column text screen)
                 jsr initScreen                  ; Render initial cell layout
                 jsr updateData                  ; Initialize backing data based on displayed cells
                 if TEST_PERF
@@ -167,13 +167,13 @@ iterate         subroutine
 .setBits        cmp #charOn                     ; A = cell character
                 bne .clearTopLeft               ; cell is disabled, so clear the topleft neighbor
                 if soundEnabled
-                bit CLICK
+                ;bit CLICK
                 endif
                 ldy #y_topleft                  ; set top left value to one (previous value is stale)
                 lda #1                          
                 sta (altData),y                 
                 if soundEnabled
-                bit CLICK                       ; (Pretend I'm not here... I just click the speaker)
+                ;bit CLICK                       ; (Pretend I'm not here... I just click the speaker)
                 endif
                 clc
                 INCREMENT top                     
@@ -414,9 +414,9 @@ rulesTable      dc.b charOff                    ;0 neighbors
 textRowsTable   subroutine                      ; Lookup table for text page 0 row addresses
 .pg             equ 1024
 .y              set 0
-                repeat 24
-                dc.w .pg + (.y & %11111000) * 5 + ((.y & %00000111) << 7)
-.y              set .y + 1
+                repeat 25
+                dc.w .pg + .y ; (.y & %11111000) * 5 + ((.y & %00000111) << 7)
+.y              set .y + 40
                 repend
                 LOG_REGION "textRowsTable", textRowsTable, 0
 
